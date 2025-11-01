@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Okey Puan Hesaplayıcı</title>
 <style>
+  /* Sadece "Okey bitme seçenekleri" ile "Eli Ekle" butonu arasındaki boşluk */
+#okeyGrup + button {
+  margin-top: 40px; /* İstediğin boşluğu buraya yazabilirsin */
+}
 body {
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   background:#f6f6f6;
@@ -29,9 +33,9 @@ label { font-weight:600; display:block; margin-top:10px; }
 input,button {
   width:100%;
   padding:10px;
-  margin-top:5px;
-  border-radius:8px;
-  border:1px solid #ccc;
+  margin-top:30px;
+  border-radius:10px;
+  border:2px solid #ccc;
   font-size:15px;
   box-sizing:border-box;
 }
@@ -46,7 +50,7 @@ button {
 button:hover { background:#005bbb; }
 button:disabled { background:#ccc; cursor:not-allowed; }
 
-#puanTablosu { width:100%; border-collapse:collapse; margin-top:15px; }
+#puanTablosu { width:100%; border-collapse:collapse; margin-top:30px; }
 #puanTablosu th,#puanTablosu td { border:1px solid #ddd; padding:8px; text-align:center; }
 #puanTablosu th { background:#007aff; color:white; }
 tfoot td { font-weight:bold; background:#eee; }
@@ -70,7 +74,7 @@ tfoot td { font-weight:bold; background:#eee; }
 }
 #kazanan.show { display:block; opacity:1; transform:scale(1); }
 
-#resetBtn { background:#ff3b30; margin-top:8px; }
+#resetBtn { background:#ff3b30; margin-top:20px; }
 .deleteBtn {
   background:#ff3b30;
   color:white;
@@ -93,8 +97,8 @@ tfoot td { font-weight:bold; background:#eee; }
 .btn-group {
   display:flex;
   flex-wrap:wrap;
-  gap:8px;
-  margin-top:8px;
+  gap:30px;
+  margin-top:20px;
 }
 .btn-option, .btn-color, .btn-okey {
   flex:1;
@@ -131,7 +135,7 @@ tfoot td { font-weight:bold; background:#eee; }
 .btn-color.mavi { background:#007aff; color:white; }
 .btn-color.sari { background:#ffcc00; color:#333; }
 .btn-color.active {
-  outline:3px solid #333;
+  outline:6px solid #333;
   transform:scale(1.08);
 }
 
@@ -140,7 +144,7 @@ tfoot td { font-weight:bold; background:#eee; }
 .btn-okey.okey { background:#1aae55; color:white; }
 .btn-okey.active {
   transform:scale(1.05);
-  outline:3px solid #333;
+  outline:6px solid #333;
 }
 </style>
 </head>
@@ -319,6 +323,7 @@ function kazanan(){
 </script>
 </body>
 </html>
+
 
 
 
