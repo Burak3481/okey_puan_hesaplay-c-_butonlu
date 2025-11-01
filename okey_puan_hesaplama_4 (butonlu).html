@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Okey Puan Hesaplayıcı (Basit & Net Stil)</title>
+<style>
+body {
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:#f6f6f6;
+  margin:0;
+  padding:0;
+  color:#333;
+}
+.container {
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  max-width:750px;
+  margin:20px auto;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+h1 {
+  color:#007aff;
+  text-align:center;
+  margin-bottom:15px;
+}
+label { font-weight:600; display:block; margin-top:10px; }
+input,button {
+  width:100%;
+  padding:10px;
+  margin-top:5px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:15px;
+  box-sizing:border-box;
+}
+button {
+  background:#007aff;
+  color:white;
+  font-weight:bold;
+  border:none;
+  cursor:pointer;
+  transition:0.2s;
+}
+button:hover { background:#005bbb; }
+button:disabled { background:#ccc; cursor:not-allowed; }
+
+#puanTablosu { width:100%; border-collapse:collapse; margin-top:15px; }
+#puanTablosu th,#puanTablosu td { border:1px solid #ddd; padding:8px; text-align:center; }
+#puanTablosu th { background:#007aff; color:white; }
+tfoot td { font-weight:bold; background:#eee; }
+.plus { color:#1aae55; font-weight:bold; }
+.minus { color:#ff3b30; font-weight:bold; }
+
+#kazanan {
+  background:#e5f8e0;
+  border:1px solid #b3e5a3;
+  padding:15px;
+  border-radius:12px;
+  margin-top:15px;
+  display:none;
+  text-align:center;
+  font-size:1.2em;
+  font-weight:bold;
+  color:#1aae55;
+  opacity:0;
+  transform:scale(0.8);
+  transition:all 0.5s ease;
+}
+#kazanan.show { display:block; opacity:1; transform:scale(1); }
+
+#resetBtn { background:#ff3b30; margin-top:8px; }
+.deleteBtn {
+  background:#ff3b30;
+  color:white;
+  border:none;
+  padding:6px 8px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:0.8em;
+}
+.deleteBtn:hover { background:#cc0000; }
+
+.siyah { background-color:#d9d9d9; }
+.kirmizi { background-color:#ffd6d6; }
+.mavi { background-color:#d6e0ff; }
+.sari { background-color:#fff6d6; }
+
+#kimseBitmediAlani { display:none; margin-top:10px; }
+
+/* --- Basit ve net buton grupları --- */
+.btn-group {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:8px;
+}
+.btn-option, .btn-color, .btn-okey {
+  flex:1;
+  text-align:center;
+  border-radius:10px;
+  padding:10px;
+  font-weight:600;
+  cursor:pointer;
+  border:2px solid #ccc;
+  transition:all 0.15s ease;
+  user-select:none;
+  color:#333;
+}
+.btn-option:hover, .btn-color:hover, .btn-okey:hover {
+  background:#f0f0f0;
+}
+
+/* Takım renkleri */
+.btn-teamA { border-color:#007aff; }
+.btn-teamB { border-color:#ff3b30; }
+.btn-none  { border-color:#888; }
+
+.btn-option.active {
+  color:white;
+  transform:scale(1.02);
+}
+.btn-teamA.active { background:#007aff; border-color:#005bbb; }
+.btn-teamB.active { background:#ff3b30; border-color:#cc0000; }
+.btn-none.active  { background:#555; border-color:#333; }
+
+/* Okey renkleri */
+.btn-color.siyah { background:#333; color:white; }
+.btn-color.kirmizi { background:#ff3b30; color:white; }
+.btn-color.mavi { background:#007aff; color:white; }
+.btn-color.sari { background:#ffcc00; color:#333; }
+.btn-color.active {
+  outline:3px solid #333;
+  transform:scale(1.08);
+}
+
+/* Okey bitiş durumu */
+.btn-okey.hayir { background:#aaa; color:white; }
+.btn-okey.okey { background:#1aae55; color:white; }
+.btn-okey.active {
+  transform:scale(1.05);
+  outline:3px solid #333;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🧮 Okey Puan Hesaplayıcı (Basit & Net)</h1>
+
+  <label>Takım İsimleri:</label>
+  <input type="text" id="takimAIsim" value="Takım A">
+  <input type="text" id="takimBIsim" value="Takım B">
+  <button onclick="takimGuncelle()">Takımları Güncelle</button>
+
+  <label>Biten Takım:</label>
+  <div class="btn-group" id="bitenGrup">
+    <div class="btn-option btn-teamA active" data-value="A">Takım A</div>
+    <div class="btn-option btn-teamB" data-value="B">Takım B</div>
+    <div class="btn-option btn-none" data-value="yok">Kimse Bitmedi</div>
+  </div>
+
+  <label>Okey Rengi:</label>
+  <div class="btn-group" id="renkGrup">
+    <div class="btn-color siyah active" data-value="siyah">⚫ Siyah</div>
+    <div class="btn-color kirmizi" data-value="kirmizi">🔴 Kırmızı</div>
+    <div class="btn-color mavi" data-value="mavi">🔵 Mavi</div>
+    <div class="btn-color sari" data-value="sari">🟡 Sarı</div>
+  </div>
+
+  <div id="tekliAlan">
+    <label>Karşı Takımın Per Olmayan Taş Toplamı:</label>
+    <input type="number" id="perOlmayanToplam" placeholder="örn. 45">
+  </div>
+
+  <div id="kimseBitmediAlani">
+    <label id="lblA">Takım A Per Olmayan Taş Toplamı:</label>
+    <input type="number" id="tasA" placeholder="örn. 45">
+    <label id="lblB">Takım B Per Olmayan Taş Toplamı:</label>
+    <input type="number" id="tasB" placeholder="örn. 60">
+  </div>
+
+  <label>Biten taraf okey ile mi bitti?</label>
+  <div class="btn-group" id="okeyGrup">
+    <div class="btn-okey hayir active" data-value="hayir">❌ Hayır</div>
+    <div class="btn-okey okey" data-value="okey">✅ Evet (Okey ile)</div>
+  </div>
+
+  <button onclick="elEkle()">Eli Ekle</button>
+  <button id="resetBtn" onclick="sifirla()">Yeni Parti</button>
+
+  <table id="puanTablosu">
+    <thead>
+      <tr>
+        <th>El</th><th>Biten</th><th>Renk</th><th>Durum</th>
+        <th id="baslikA">A Puan</th><th id="baslikB">B Puan</th><th>🗑️</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+      <tr><td colspan="4">Toplam</td><td id="toplamA">0</td><td id="toplamB">0</td><td></td></tr>
+    </tfoot>
+  </table>
+
+  <div id="kazanan"></div>
+</div>
+
+<script>
+let elSayisi=0, toplamA=0, toplamB=0;
+const maxEl=11;
+const renkKatsayi={siyah:5,kirmizi:4,mavi:3,sari:2};
+let bitenTakim="A", okeyRenk="siyah", okeyBitis="hayir";
+
+function grupSecici(id, callback){
+  document.querySelectorAll(`#${id} .btn-option, #${id} .btn-color, #${id} .btn-okey`).forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      btn.parentElement.querySelectorAll(".active").forEach(a=>a.classList.remove("active"));
+      btn.classList.add("active");
+      callback(btn.dataset.value);
+    });
+  });
+}
+
+grupSecici("bitenGrup",(v)=>{
+  bitenTakim=v;
+  document.getElementById("tekliAlan").style.display=v==="yok"?"none":"block";
+  document.getElementById("kimseBitmediAlani").style.display=v==="yok"?"block":"none";
+});
+grupSecici("renkGrup",(v)=>okeyRenk=v);
+grupSecici("okeyGrup",(v)=>okeyBitis=v);
+
+function takimGuncelle(){
+  const a=document.getElementById("takimAIsim").value||"Takım A";
+  const b=document.getElementById("takimBIsim").value||"Takım B";
+  document.getElementById("lblA").innerText=a+" Per Olmayan Taş Toplamı:";
+  document.getElementById("lblB").innerText=b+" Per Olmayan Taş Toplamı:";
+  document.getElementById("baslikA").innerText=a+" Puan";
+  document.getElementById("baslikB").innerText=b+" Puan";
+  document.querySelector("#bitenGrup .btn-teamA").innerText=a;
+  document.querySelector("#bitenGrup .btn-teamB").innerText=b;
+}
+
+function hesapla(biten,renk,tas,okey){
+  const k=renkKatsayi[renk];
+  if(biten==="yok"){
+    return {a:tas.a*k,b:tas.b*k,durum:"Kimse Bitmedi"};
+  }
+  const perToplam=tas;
+  const yanik=perToplam>=100;
+  let bitenDus=10*k, digerEkle=perToplam*k;
+  if(okey==="okey"){bitenDus=100*k;digerEkle*=2;}
+  if(yanik){bitenDus=100*k;digerEkle=100*k;}
+  if(yanik&&okey==="okey"){bitenDus=100*k;digerEkle=100*k;}
+  if(biten==="A")return{a:-bitenDus,b:digerEkle,durum:yanik?(okey==="okey"?"YANIK+OKEY":"YANIK"):(okey==="okey"?"OKEY":"Normal")};
+  else return{a:digerEkle,b:-bitenDus,durum:yanik?(okey==="okey"?"YANIK+OKEY":"YANIK"):(okey==="okey"?"OKEY":"Normal")};
+}
+
+function elEkle(){
+  if(elSayisi>=maxEl){alert("11 el tamamlandı!");return;}
+  let sonuc;
+  if(bitenTakim==="yok"){
+    const ta=parseInt(document.getElementById("tasA").value);
+    const tb=parseInt(document.getElementById("tasB").value);
+    if(isNaN(ta)||isNaN(tb)){alert("İki takımın taş toplamlarını giriniz!");return;}
+    sonuc=hesapla("yok",okeyRenk,{a:ta,b:tb},okeyBitis);
+  }else{
+    const per=parseInt(document.getElementById("perOlmayanToplam").value);
+    if(isNaN(per)){alert("Per olmayan taş toplamını giriniz!");return;}
+    sonuc=hesapla(bitenTakim,okeyRenk,per,okeyBitis);
+  }
+  elSayisi++;
+  toplamA+=sonuc.a; toplamB+=sonuc.b;
+
+  const tbody=document.querySelector("#puanTablosu tbody");
+  const row=document.createElement("tr");
+  row.className=okeyRenk;
+  row.dataset.a=sonuc.a; row.dataset.b=sonuc.b;
+  const aName=document.getElementById("takimAIsim").value||"Takım A";
+  const bName=document.getElementById("takimBIsim").value||"Takım B";
+  row.innerHTML=`
+    <td>${elSayisi}</td>
+    <td>${bitenTakim==="yok"?"Kimse Bitmedi":(bitenTakim==="A"?aName:bName)}</td>
+    <td>${okeyRenk.toUpperCase()}</td>
+    <td>${sonuc.durum}</td>
+    <td class="${sonuc.a>=0?'plus':'minus'}">${sonuc.a>0?'+':''}${sonuc.a}</td>
+    <td class="${sonuc.b>=0?'plus':'minus'}">${sonuc.b>0?'+':''}${sonuc.b}</td>
+    <td><button class="deleteBtn" onclick="elSil(this)">Sil</button></td>`;
+  tbody.appendChild(row);
+  document.getElementById("toplamA").innerText=toplamA;
+  document.getElementById("toplamB").innerText=toplamB;
+  if(elSayisi===maxEl)kazanan();
+}
+
+function elSil(btn){
+  const tr=btn.closest("tr");
+  toplamA-=Number(tr.dataset.a); toplamB-=Number(tr.dataset.b);
+  tr.remove(); elSayisi--;
+  document.getElementById("toplamA").innerText=toplamA;
+  document.getElementById("toplamB").innerText=toplamB;
+  document.getElementById("kazanan").classList.remove("show");
+}
+function sifirla(){
+  elSayisi=0;toplamA=0;toplamB=0;
+  document.querySelector("#puanTablosu tbody").innerHTML="";
+  document.getElementById("toplamA").innerText="0";
+  document.getElementById("toplamB").innerText="0";
+  document.getElementById("kazanan").classList.remove("show");
+  document.getElementById("kazanan").innerText="";
+}
+function kazanan(){
+  const a=document.getElementById("takimAIsim").value||"Takım A";
+  const b=document.getElementById("takimBIsim").value||"Takım B";
+  const div=document.getElementById("kazanan");
+  if(toplamA<toplamB)div.innerText=`🏆 Kazanan: ${a} (${toplamA} - ${toplamB})`;
+  else if(toplamB<toplamA)div.innerText=`🏆 Kazanan: ${b} (${toplamB} - ${toplamA})`;
+  else div.innerText=`🤝 Berabere! (${toplamA} - ${toplamB})`;
+  div.classList.add("show");
+}
+</script>
+</body>
+</html>
