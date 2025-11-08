@@ -253,7 +253,7 @@ function hesapla(biten,renk,tas,okey){
   const yanik=perToplam>=100;
   let bitenDus=10*k, digerEkle=perToplam*k;
   if(okey==="okey"){bitenDus=100*k;digerEkle*=2;}
-  if(yanik){bitenDus=100*k;digerEkle=100*k;}
+  if(yanik){bitenDus=10*k;digerEkle=100*k;}
   if(yanik&&okey==="okey"){bitenDus=100*k;digerEkle=100*k;}
   if(biten==="A")return{a:-bitenDus,b:digerEkle,durum:yanik?(okey==="okey"?"YANIK+OKEY":"YANIK"):(okey==="okey"?"OKEY":"Normal")};
   else return{a:digerEkle,b:-bitenDus,durum:yanik?(okey==="okey"?"YANIK+OKEY":"YANIK"):(okey==="okey"?"OKEY":"Normal")};
@@ -323,6 +323,7 @@ function kazanan(){
 </script>
 </body>
 </html>
+
 
 
 
