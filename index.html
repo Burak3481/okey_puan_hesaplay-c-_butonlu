@@ -178,16 +178,16 @@ tfoot td { font-weight:bold; background:#eee; }
   <div id="tekliAlan">
     <label>Karşı Takımın Per Olmayan Taş Toplamı:</label>
     <input type="number" id="perOlmayanToplam" placeholder="örn. 45"
-     inputmode="numeric" pattern="[0-9]*"> <!-- DEĞİŞİKLİK -->
+     inputmode="numeric" pattern="[0-9]*">
   </div>
 
   <div id="kimseBitmediAlani">
     <label id="lblA">Takım A Per Olmayan Taş Toplamı:</label>
     <input type="number" id="tasA" placeholder="örn. 45"
-     inputmode="numeric" pattern="[0-9]*"> <!-- DEĞİŞİKLİK -->
+     inputmode="numeric" pattern="[0-9]*">
     <label id="lblB">Takım B Per Olmayan Taş Toplamı:</label>
     <input type="number" id="tasB" placeholder="örn. 60"
-     inputmode="numeric" pattern="[0-9]*"> <!-- DEĞİŞİKLİK -->
+     inputmode="numeric" pattern="[0-9]*">
   </div>
 
   <label>Biten taraf okey ile mi bitti?</label>
@@ -213,6 +213,11 @@ tfoot td { font-weight:bold; background:#eee; }
   </table>
 
   <div id="kazanan"></div>
+
+  <!-- 📸 Skor Tablosu Screenshot Butonu (11 el sonunda açılır) -->
+  <button id="ssBtn" style="display:none; background:#444; margin-top:20px;"
+  onclick="tabloSS()">📸 Skor Tablosu Ekran Görüntüsü</button>
+
 </div>
 
 <script>
@@ -309,6 +314,7 @@ function elSil(btn){
   document.getElementById("toplamB").innerText=toplamB;
   document.getElementById("kazanan").classList.remove("show");
 }
+
 function sifirla(){
   elSayisi=0;toplamA=0;toplamB=0;
   document.querySelector("#puanTablosu tbody").innerHTML="";
@@ -316,7 +322,11 @@ function sifirla(){
   document.getElementById("toplamB").innerText="0";
   document.getElementById("kazanan").classList.remove("show");
   document.getElementById("kazanan").innerText="";
+
+  /* Screenshot butonu gizle */
+  document.getElementById("ssBtn").style.display="none";
 }
+
 function kazanan(){
   const a=document.getElementById("takimAIsim").value||"Takım A";
   const b=document.getElementById("takimBIsim").value||"Takım B";
@@ -325,7 +335,25 @@ function kazanan(){
   else if(toplamB<toplamA)div.innerText=`🏆 Kazanan: ${b} (${toplamB} - ${toplamA})`;
   else div.innerText=`🤝 Berabere! (${toplamA} - ${toplamB})`;
   div.classList.add("show");
+
+  /* 📸 Screenshot butonu görünür olsun */
+  document.getElementById("ssBtn").style.display="block";
+}
+
+/* 📸 SADECE SKOR TABLOSUNUN EKRAN GÖRÜNTÜSÜ */
+function tabloSS(){
+  const tablo=document.getElementById("puanTablosu");
+  html2canvas(tablo).then(canvas=>{
+    const a=document.createElement("a");
+    a.download="skor_tablosu.png";
+    a.href=canvas.toDataURL();
+    a.click();
+  });
 }
 </script>
+
+<!-- Screenshot için gerekli kütüphane -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 </body>
 </html>
