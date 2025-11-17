@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Okey Puan Hesaplayıcı</title>
 <style>
-  /* Sadece "Okey bitme seçenekleri" ile "Eli Ekle" butonu arasındaki boşluk */
+
+/* Sadece "Okey bitme seçenekleri" ile "Eli Ekle" butonu arasındaki boşluk */
 #okeyGrup + button {
   margin-top: 40px; /* İstediğin boşluğu buraya yazabilirsin */
 }
+
 body {
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   background:#f6f6f6;
@@ -32,7 +34,7 @@ h1 {
 label { font-weight:600; display:block; margin-top:10px; }
 input,button {
   width:100%;
-  padding:10px;
+  padding:15px;
   margin-top:10px;
   border-radius:10px;
   border:2px solid #ccc;
@@ -46,6 +48,7 @@ button {
   border:none;
   cursor:pointer;
   transition:0.2s;
+
 }
 button:hover { background:#005bbb; }
 button:disabled { background:#ccc; cursor:not-allowed; }
@@ -174,14 +177,17 @@ tfoot td { font-weight:bold; background:#eee; }
 
   <div id="tekliAlan">
     <label>Karşı Takımın Per Olmayan Taş Toplamı:</label>
-    <input type="number" id="perOlmayanToplam" placeholder="örn. 45">
+    <input type="number" id="perOlmayanToplam" placeholder="örn. 45"
+     inputmode="numeric" pattern="[0-9]*"> <!-- DEĞİŞİKLİK -->
   </div>
 
   <div id="kimseBitmediAlani">
     <label id="lblA">Takım A Per Olmayan Taş Toplamı:</label>
-    <input type="number" id="tasA" placeholder="örn. 45">
+    <input type="number" id="tasA" placeholder="örn. 45"
+     inputmode="numeric" pattern="[0-9]*"> <!-- DEĞİŞİKLİK -->
     <label id="lblB">Takım B Per Olmayan Taş Toplamı:</label>
-    <input type="number" id="tasB" placeholder="örn. 60">
+    <input type="number" id="tasB" placeholder="örn. 60"
+     inputmode="numeric" pattern="[0-9]*"> <!-- DEĞİŞİKLİK -->
   </div>
 
   <label>Biten taraf okey ile mi bitti?</label>
@@ -323,10 +329,3 @@ function kazanan(){
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
